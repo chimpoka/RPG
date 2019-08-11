@@ -1,5 +1,0 @@
-sceneSetups:
-- path: Assets/MegaPack1Lite/SciFiPack1/Scenes/scifi_showcase.unity
-  isLoaded: 1
-  isActive: 1
-  isSubScene: 0
