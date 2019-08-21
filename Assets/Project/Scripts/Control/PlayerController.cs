@@ -5,6 +5,7 @@ using System;
 
 using RPG.Movement;
 using RPG.Combat;
+using RPG.Core;
 
 namespace RPG.Control
 {
@@ -12,15 +13,19 @@ namespace RPG.Control
     {
         private Camera MainCamera;
         private Mover PlayerMovement;
+        private Health HealthComponent;
 
         void Start()
         {
             MainCamera = Camera.main;
             PlayerMovement = GetComponent<Mover>();
+            HealthComponent = GetComponent<Health>();
         }
 
         void Update()
         {
+            if (HealthComponent.IsDead) return;
+
             // Mouse cursor located on enemy
             if (InteractWithCombat()) return;
             // Mouse cursor located on landscape
@@ -35,9 +40,14 @@ namespace RPG.Control
                 CombatTarget target = hit.transform.gameObject.GetComponent<CombatTarget>();
                 if (target == null) continue;
 
+                if (!GetComponent<Fighter>().CanAttack(target.gameObject))
+                {
+                    continue;
+                }
+
                 if (Input.GetMouseButtonDown(0))
                 {
-                    GetComponent<Fighter>().Attack(target);
+                    GetComponent<Fighter>().Attack(target.gameObject);
                 }
                 return true;
             }

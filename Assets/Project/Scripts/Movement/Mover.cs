@@ -9,31 +9,34 @@ using RPG.Core;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IAction
     {
         private NavMeshAgent Agent;
         private Animator Animator;
+        private Health HealthComponent;
 
         void Start()
         {
             Agent = GetComponent<NavMeshAgent>();
             Animator = GetComponent<Animator>();
+            HealthComponent = GetComponent<Health>();
         }
 
         void Update()
         {
+            Agent.enabled = !HealthComponent.IsDead;
             UpdateAnimator();
-        }
 
-        public void Stop()
-        {
-            Agent.isStopped = true;
+            // Debug
+            if (name == "Enemy (1)")
+            {
+              //  print(Agent.isStopped);
+            }
         }
 
         public void StartMoveAction(Vector3 destination)
         {
             GetComponent<ActionSchaduler>().StartAction(this);
-            GetComponent<Fighter>().CancelAttack();
             MoveTo(destination);
         }
 
@@ -50,6 +53,11 @@ namespace RPG.Movement
             float speed = localVelocity.z;
             speed = Mathf.InverseLerp(0, Agent.speed, speed);
             Animator.SetFloat("ForwardSpeed", speed);
+        }
+
+        public void Cancel()
+        {
+            Agent.isStopped = true;
         }
     }
 }
