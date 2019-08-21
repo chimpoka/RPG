@@ -26,12 +26,6 @@ namespace RPG.Movement
         {
             Agent.enabled = !HealthComponent.IsDead;
             UpdateAnimator();
-
-            // Debug
-            if (name == "Enemy (1)")
-            {
-              //  print(Agent.isStopped);
-            }
         }
 
         public void StartMoveAction(Vector3 destination)
